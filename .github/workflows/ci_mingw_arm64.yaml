@@ -41,7 +41,7 @@ jobs:
           PATH=$PATH:${{ env.llvm_path }}/bin
           # tell vcpkg to only build Release variants of the dependencies
           cd ${{ env.RUNVCPKG_VCPKG_ROOT }}
-          patch -p1 < "${{ github.workspace }}/patches//0001-support-openssl-arm64-mingw-static-release.patch"
+          # patch -p1 < "${{ github.workspace }}/patches//0001-support-openssl-arm64-mingw-static-release.patch"
           echo "set(VCPKG_BUILD_TYPE release)" >> triplets/community/arm64-mingw-dynamic.cmake
           echo "set(VCPKG_BUILD_TYPE release)" >> triplets/community/arm64-mingw-static.cmake
           echo "set(VCPKG_BUILD_TYPE release)" >> triplets/x64-linux.cmake
