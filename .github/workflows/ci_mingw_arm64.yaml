@@ -6,7 +6,8 @@ on:
 jobs:
   build-mingw-arm64:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    #runs-on: ubuntu-latest
     env:
       llvm_path: "${{ github.workspace }}/llvm-mingw"
       libtorrent_path: "${{ github.workspace }}/libtorrent-mingw-arm64"
