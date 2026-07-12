@@ -33,6 +33,7 @@ jobs:
                                   # action you need, `v11` in this case to stay up
                                   # to date with fixes on the v11 branch
         with:
+          vcpkgDirectory: C:/vcpkg
           vcpkgGitCommitId: 'cd61e1e26a038e82d6550a3ebbe0fbbfe7da78e3'
 
       - name: Install dependencies from vcpkg
