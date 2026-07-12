@@ -49,7 +49,7 @@ jobs:
           ./vcpkg upgrade 
           ./vcpkg install $packages --triplet arm64-mingw-static --clean-after-build 
           cd installed/arm64-mingw-static/lib/
-          ln libzlib.a libz.a
+          ln libzs.a libz.a
 
       - name: Install boost
         run: |
@@ -108,8 +108,8 @@ jobs:
       - name: Build qBittorrent
         run: |
           PATH="${{ env.qt_path }}/bin:$PATH"
-          aria2c http://prdownloads.sourceforge.net/qbittorrent/qbittorrent/qbittorrent-${{ env.qbt_version }}/qbittorrent-${{ env.qbt_version }}.tar.gz
-          tar -xf qbittorrent-${{ env.qbt_version }}.tar.gz
+          aria2c http://prdownloads.sourceforge.net/qbittorrent/qbittorrent/qbittorrent-${{ env.qbt_version }}/qbittorrent-${{ env.qbt_version }}.tar.xz
+          tar -xf qbittorrent-${{ env.qbt_version }}.tar.xz
           cd qbittorrent-${{ env.qbt_version }}
           sed -i 's/Iphlpapi PowrProf/iphlpapi powrprof/g' src/base/CMakeLists.txt
           cmake \
