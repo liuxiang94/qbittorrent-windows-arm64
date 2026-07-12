@@ -50,6 +50,7 @@ jobs:
           ./vcpkg install $packages --triplet arm64-mingw-static --clean-after-build 
           cd installed/arm64-mingw-static/lib/
           ln libzs.a libz.a
+          ln libzs.a libzlib.a
 
       - name: Install boost
         run: |
