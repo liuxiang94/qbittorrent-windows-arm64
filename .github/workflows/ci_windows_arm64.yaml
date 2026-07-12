@@ -1,7 +1,7 @@
 name: Build for Windows ARM64
 
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
   build-windows-arm64:
@@ -11,9 +11,9 @@ jobs:
       boost_path: "${{ github.workspace }}/../boost"
       libtorrent_path: "${{ github.workspace }}/libtorrent-msvc-arm64"
       qt_path: "${{ github.workspace }}/../qt-msvc-arm64"
-      libt_version: "2.0.11"
-      qbt_version: "5.1.0"
-      qt_version: "6.9.0"
+      libt_version: "2.1.0"
+      qbt_version: "5.2.3"
+      qt_version: "6.11.1"
 
     steps:
       - name: Checkout repository
@@ -28,13 +28,12 @@ jobs:
         run: |
           choco install ninja
 
-      # use the preinstalled vcpkg from image
-      # https://github.com/actions/virtual-environments/blob/main/images/win/Windows2019-Readme.md#package-management
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v10
+      - name: Setup a new (or from cache) vcpkg (and does not build any package)
+        uses: lukka/run-vcpkg@v11 # Always specify the specific _version_ of the
+                                  # action you need, `v11` in this case to stay up
+                                  # to date with fixes on the v11 branch
         with:
-          vcpkgDirectory: C:/vcpkg
-          doNotUpdateVcpkg: true  # the preinstalled vcpkg is updated regularly
+          vcpkgGitCommitId: 'cd61e1e26a038e82d6550a3ebbe0fbbfe7da78e3'
 
       - name: Install dependencies from vcpkg
         run: |
@@ -51,7 +50,7 @@ jobs:
       - name: Install boost
         run: |
           aria2c `
-            "https://jaist.dl.sourceforge.net/project/boost/boost/1.88.0/boost_1_88_0.7z" `
+            "https://jaist.dl.sourceforge.net/project/boost/boost/1.91.0/boost_1_91_0.7z" `
             -d "${{ runner.temp }}" `
             -o "boost.7z"
           7z x "${{ runner.temp }}/boost.7z" -o"${{ github.workspace }}/.."
@@ -107,8 +106,8 @@ jobs:
         run: |
           $env:path = "${{ env.qt_path }}/bin;$env:path"
           $env:LDFLAGS+=" /FORCE:MULTIPLE"
-          aria2c http://prdownloads.sourceforge.net/qbittorrent/qbittorrent/qbittorrent-${{ env.qbt_version }}/qbittorrent-${{ env.qbt_version }}.tar.gz
-          tar -xf qbittorrent-${{ env.qbt_version }}.tar.gz
+          aria2c http://prdownloads.sourceforge.net/qbittorrent/qbittorrent/qbittorrent-${{ env.qbt_version }}/qbittorrent-${{ env.qbt_version }}.tar.xz
+          tar -xf qbittorrent-${{ env.qbt_version }}.tar.xz
           cd qbittorrent-${{ env.qbt_version }}
           cmake `
             -B build `
@@ -133,7 +132,7 @@ jobs:
           mv qbittorrent_${{ env.qbt_version }}_arm64.zip ..
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: qBittorrent_${{ env.qbt_version }}_arm64
           path: upload
@@ -145,3 +144,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: qbittorrent_${{ env.qbt_version }}_arm64.zip
+
