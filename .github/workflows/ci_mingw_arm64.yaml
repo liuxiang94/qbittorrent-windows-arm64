@@ -48,6 +48,7 @@ jobs:
           echo "set(VCPKG_BUILD_TYPE release)" >> triplets/x64-linux.cmake
           packages='openssl zlib'
           ./vcpkg upgrade 
+          rm -f installed/vcpkg/vcpkg-running.lock
           ./vcpkg install $packages --triplet arm64-mingw-static --clean-after-build 
           cd installed/arm64-mingw-static/lib/
           ln libzs.a libz.a
