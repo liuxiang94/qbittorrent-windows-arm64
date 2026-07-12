@@ -12,9 +12,9 @@ jobs:
       libtorrent_path: "${{ github.workspace }}/libtorrent-mingw-arm64"
       qt_path: "${{ github.workspace }}/qt-mingw-arm64"
       boost_path: "${{ github.workspace }}/boost"
-      libt_version: "2.0.11"
-      qbt_version: "5.1.4"
-      qt_version: "6.9.3"
+      libt_version: "2.1.0"
+      qbt_version: "5.2.3"
+      qt_version: "6.11.1"
 
     steps:
       - name: Checkout repository
@@ -34,7 +34,7 @@ jobs:
                                   # action you need, `v11` in this case to stay up
                                   # to date with fixes on the v11 branch
         with:
-          vcpkgGitCommitId: '84bab45d415d22042bd0b9081aea57f362da3f35'
+          vcpkgGitCommitId: 'cd61e1e26a038e82d6550a3ebbe0fbbfe7da78e3'
 
       - name: Install dependencies from vcpkg
         run: |
@@ -54,11 +54,11 @@ jobs:
       - name: Install boost
         run: |
           aria2c \
-            "https://archives.boost.io/release/1.90.0/source/boost_1_90_0.7z" \
+            "https://archives.boost.io/release/1.91.0/source/boost_1_91_0.7z" \
             -o "boost.7z"
           7z x "boost.7z"
           rm "boost.7z"
-          mv boost_1_90_0 boost
+          mv boost_1_91_0 boost
 
       - name: Install Qt (host x64)
         uses: jurplel/install-qt-action@v4
